@@ -8,7 +8,7 @@ import { FaTrash, FaArrowLeft } from 'react-icons/fa'
 import { useCart } from '@/context/CartContext'
 
 export default function Cart() {
-  const { items, removeItem, updateQuantity, total, itemsCount } = useCart()
+  const { items, removeFromCart, updateQuantity, total, itemsCount } = useCart()
 
   if (items.length === 0) {
     return (
@@ -85,7 +85,7 @@ export default function Cart() {
                           </button>
                         </div>
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeFromCart(item.id)}
                           className="text-red-500 hover:text-red-600 transition-colors"
                         >
                           <FaTrash />
