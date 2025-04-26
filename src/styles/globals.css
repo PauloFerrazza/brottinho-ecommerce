@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #d4a0a0;
+  --primary-dark: #8e7474;
+  --primary-light: #f3e7e7;
+  --background: #fff5f5;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-gray-900 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-[#d4a0a0] to-[#b88d8d] text-white px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:from-[#b88d8d] hover:to-[#d4a0a0];
+  }
+
+  .btn-secondary {
+    @apply bg-white/80 backdrop-blur-sm text-[#d4a0a0] px-8 py-4 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:bg-[#f3e7e7] border border-[#d4a0a0]/20;
+  }
+
+  .input-primary {
+    @apply w-full h-[40px] pl-4 pr-10 rounded-full border border-[#f3e7e7] focus:border-[#d4a0a0] focus:outline-none text-sm transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-4;
+  }
+}
+
+/* Animações */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Seleção de texto */
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* Transições suaves */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Container responsivo */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Gradientes */
+.bg-gradient-primary {
+  @apply bg-gradient-to-r from-[#d4a0a0] to-[#8e7474];
+}
+
+.text-gradient-primary {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-[#d4a0a0] to-[#8e7474];
+}
+
+/* Sombras */
+.shadow-soft {
+  @apply shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)];
+}
+
+/* Efeitos de hover */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.hover-scale {
+  @apply transition-transform duration-300 hover:scale-105;
+}
+
+/* Utilitários */
+.text-balance {
+  text-wrap: balance;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    @apply px-6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    @apply px-8;
+  }
+}
+
+/* Estilos globais adicionais */
+html {
+  scroll-behavior: smooth;
+} 
