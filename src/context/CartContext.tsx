@@ -12,22 +12,25 @@ interface Product {
   quantity?: number
 }
 
+interface CartItem extends Product {
+  quantity: number
+}
+
 interface CartContextType {
-  items: Product[]
+  items: CartItem[]
   addToCart: (product: Product) => void
-  removeFromCart: (productId: number) => void
+  removeItem: (productId: number) => void
   updateQuantity: (productId: number, quantity: number) => void
-  clearCart: () => void
-  totalItems: number
-  totalPrice: number
+  total: number
+  itemsCount: number
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<Product[]>([])
-  const [totalItems, setTotalItems] = useState(0)
-  const [totalPrice, setTotalPrice] = useState(0)
+  const [items, setItems] = useState<CartItem[]>([])
+  const [total, setTotal] = useState(0)
+  const [itemsCount, setItemsCount] = useState(0)
 
   useEffect(() => {
     // Carregar carrinho do localStorage
@@ -41,39 +44,39 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Salvar carrinho no localStorage
     localStorage.setItem('cart', JSON.stringify(items))
     
-    // Calcular totais
-    const total = items.reduce((acc, item) => acc + (item.quantity || 1), 0)
-    const price = items.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0)
+    // Calcular total e quantidade de itens
+    const newTotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+    const newItemsCount = items.reduce((acc, item) => acc + item.quantity, 0)
     
-    setTotalItems(total)
-    setTotalPrice(price)
+    setTotal(newTotal)
+    setItemsCount(newItemsCount)
   }, [items])
 
   const addToCart = (product: Product) => {
-    setItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id)
+    setItems(prev => {
+      const existingItem = prev.find(item => item.id === product.id)
       
       if (existingItem) {
-        return prevItems.map(item =>
+        return prev.map(item =>
           item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
             : item
         )
       }
       
-      return [...prevItems, { ...product, quantity: 1 }]
+      return [...prev, { ...product, quantity: product.quantity || 1 }]
     })
   }
 
-  const removeFromCart = (productId: number) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== productId))
+  const removeItem = (productId: number) => {
+    setItems(prev => prev.filter(item => item.id !== productId))
   }
 
   const updateQuantity = (productId: number, quantity: number) => {
     if (quantity < 1) return
-
-    setItems(prevItems =>
-      prevItems.map(item =>
+    
+    setItems(prev =>
+      prev.map(item =>
         item.id === productId
           ? { ...item, quantity }
           : item
@@ -81,20 +84,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     )
   }
 
-  const clearCart = () => {
-    setItems([])
-  }
-
   return (
     <CartContext.Provider
       value={{
         items,
         addToCart,
-        removeFromCart,
+        removeItem,
         updateQuantity,
-        clearCart,
-        totalItems,
-        totalPrice
+        total,
+        itemsCount
       }}
     >
       {children}
