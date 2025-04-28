@@ -17,6 +17,10 @@ const menuItems = {
     { name: 'Nossa História', href: '/sobre' },
     { name: 'Artesãs', href: '/sobre/artesas' },
     { name: 'Processo', href: '/sobre/processo' },
+  ],
+  legal: [
+    { name: 'Política de Privacidade', href: '/privacidade' },
+    { name: 'Termos de Uso', href: '/termos' },
   ]
 }
 
@@ -164,14 +168,14 @@ export default function Header() {
             {/* Menu de navegação */}
             <nav className="border-t border-[#f3e7e7]">
               <ul className="hidden lg:flex items-center gap-8 h-12">
-                {['Início', 'Produtos', 'Sobre', 'Contato'].map((item) => (
+                {['Início', 'Produtos', 'Sobre', 'Contato', 'Legal'].map((item) => (
                   <li
                     key={item}
                     className="relative h-full"
                     onMouseEnter={() => setActiveMenu(item.toLowerCase())}
                     onMouseLeave={() => setActiveMenu(null)}
                   >
-                    {['Produtos', 'Sobre'].includes(item) ? (
+                    {['Produtos', 'Sobre', 'Legal'].includes(item) ? (
                       <>
                         <button className="h-full flex items-center gap-1 text-[#8e7474] hover:text-[#d4a0a0] transition-colors text-sm font-medium">
                           {item}
@@ -200,7 +204,7 @@ export default function Header() {
                         </AnimatePresence>
                       </>
                     ) : (
-                      <Link 
+                      <Link
                         href={item === 'Início' ? '/' : `/${item.toLowerCase()}`}
                         className="h-full flex items-center text-[#8e7474] hover:text-[#d4a0a0] transition-colors text-sm font-medium"
                       >
@@ -226,9 +230,9 @@ export default function Header() {
           >
             <div className="container mx-auto px-4 py-4">
               <ul className="space-y-4">
-                {['Início', 'Produtos', 'Sobre', 'Contato'].map((item) => (
+                {['Início', 'Produtos', 'Sobre', 'Contato', 'Legal'].map((item) => (
                   <li key={item}>
-                    {['Produtos', 'Sobre'].includes(item) ? (
+                    {['Produtos', 'Sobre', 'Legal'].includes(item) ? (
                       <div className="space-y-2">
                         <button
                           onClick={() => setActiveMenu(activeMenu === item.toLowerCase() ? null : item.toLowerCase())}
