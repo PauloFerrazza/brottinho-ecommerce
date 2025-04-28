@@ -5,12 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FaTrash, FaArrowLeft } from 'react-icons/fa'
-import { useCart } from '@/context/CartContext'
+import { useCart } from '../context/CartContext'
 
 export default function Cart() {
-  const { items, removeFromCart, updateQuantity, total, itemsCount } = useCart()
+  const { cart, removeFromCart, updateQuantity, total } = useCart()
 
-  if (items.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-[#fff5f5] py-20">
         <div className="container mx-auto px-4">
@@ -45,7 +45,7 @@ export default function Cart() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Lista de Produtos */}
             <div className="lg:col-span-2 space-y-4">
-              {items.map((item) => (
+              {cart.map((item) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -71,14 +71,14 @@ export default function Cart() {
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, (item.quantity || 0) - 1)}
                             className="w-8 h-8 rounded-full border border-[#f3e7e7] flex items-center justify-center text-[#d4a0a0] hover:bg-[#f3e7e7] transition-colors"
                           >
                             -
                           </button>
-                          <span className="w-8 text-center">{item.quantity}</span>
+                          <span className="w-8 text-center">{item.quantity || 0}</span>
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, (item.quantity || 0) + 1)}
                             className="w-8 h-8 rounded-full border border-[#f3e7e7] flex items-center justify-center text-[#d4a0a0] hover:bg-[#f3e7e7] transition-colors"
                           >
                             +
@@ -105,7 +105,7 @@ export default function Cart() {
                 </h2>
                 <div className="space-y-4">
                   <div className="flex justify-between text-gray-600">
-                    <span>Subtotal ({itemsCount} itens)</span>
+                    <span>Subtotal</span>
                     <span>R$ {total.toFixed(2).replace('.', ',')}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
