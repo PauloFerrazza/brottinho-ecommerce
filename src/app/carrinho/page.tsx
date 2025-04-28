@@ -6,17 +6,17 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function CarrinhoPage() {
-  const { data: session, status } = useSession();
+  const session = useSession();
   const { cart, total } = useCart();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (session.status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [session.status, router]);
 
-  if (status === 'loading') {
+  if (session.status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
@@ -24,7 +24,7 @@ export default function CarrinhoPage() {
     );
   }
 
-  if (!session) {
+  if (!session.data) {
     return null;
   }
 

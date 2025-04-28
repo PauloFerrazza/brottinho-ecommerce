@@ -7,17 +7,17 @@ import { motion } from 'framer-motion'
 import { FaUser, FaShoppingBag, FaHeart, FaStar, FaSignOutAlt } from 'react-icons/fa'
 
 export default function AccountPage() {
-  const { data: session, status } = useSession()
+  const session = useSession()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('perfil')
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (session.status === 'unauthenticated') {
       router.push('/login')
     }
-  }, [status, router])
+  }, [session.status, router])
 
-  if (status === 'loading') {
+  if (session.status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
@@ -25,7 +25,7 @@ export default function AccountPage() {
     )
   }
 
-  if (!session) {
+  if (!session.data) {
     return null
   }
 
@@ -92,7 +92,7 @@ export default function AccountPage() {
                         </label>
                         <input
                           type="text"
-                          value={session?.user?.name || ''}
+                          value={session.data.user?.name || ''}
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d4a0a0]"
                           disabled
                         />
@@ -103,7 +103,7 @@ export default function AccountPage() {
                         </label>
                         <input
                           type="email"
-                          value={session?.user?.email || ''}
+                          value={session.data.user?.email || ''}
                           className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d4a0a0]"
                           disabled
                         />
