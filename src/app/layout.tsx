@@ -25,6 +25,22 @@ export const metadata: Metadata = {
   description: 'Artesanato em madeira feito com amor',
 }
 
+function RootLayoutClient({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      <CartProvider>
+        <FavoritesProvider>
+          <Header />
+          <main className="flex-1 w-full max-w-[2000px] mx-auto">
+            {children}
+          </main>
+          <Footer />
+        </FavoritesProvider>
+      </CartProvider>
+    </SessionProvider>
+  )
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -33,17 +49,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-screen flex flex-col bg-background">
-        <SessionProvider>
-          <CartProvider>
-            <FavoritesProvider>
-              <Header />
-              <main className="flex-1 w-full max-w-[2000px] mx-auto">
-                {children}
-              </main>
-              <Footer />
-            </FavoritesProvider>
-          </CartProvider>
-        </SessionProvider>
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   )
