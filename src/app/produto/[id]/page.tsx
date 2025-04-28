@@ -25,6 +25,15 @@ const product = {
   }
 }
 
+// Função para gerar os parâmetros estáticos
+export async function generateStaticParams() {
+  // Por enquanto, retornamos apenas um ID
+  // Em produção, isso viria de uma API ou banco de dados
+  return [
+    { id: '1' }
+  ]
+}
+
 export default function ProductPage() {
   return <ProductDetail product={product} />
 }
