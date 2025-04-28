@@ -33,23 +33,27 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [itemsCount, setItemsCount] = useState(0)
 
   useEffect(() => {
-    // Carregar carrinho do localStorage
-    const savedCart = localStorage.getItem('cart')
-    if (savedCart) {
-      setItems(JSON.parse(savedCart))
+    // Carregar carrinho do localStorage apenas no cliente
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart')
+      if (savedCart) {
+        setItems(JSON.parse(savedCart))
+      }
     }
   }, [])
 
   useEffect(() => {
-    // Salvar carrinho no localStorage
-    localStorage.setItem('cart', JSON.stringify(items))
-    
-    // Calcular total e quantidade de itens
-    const newTotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
-    const newItemsCount = items.reduce((acc, item) => acc + item.quantity, 0)
-    
-    setTotal(newTotal)
-    setItemsCount(newItemsCount)
+    // Salvar carrinho no localStorage apenas no cliente
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(items))
+      
+      // Calcular total e quantidade de itens
+      const newTotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+      const newItemsCount = items.reduce((acc, item) => acc + item.quantity, 0)
+      
+      setTotal(newTotal)
+      setItemsCount(newItemsCount)
+    }
   }, [items])
 
   const addToCart = (product: Product) => {

@@ -26,17 +26,21 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [totalFavorites, setTotalFavorites] = useState(0)
 
   useEffect(() => {
-    // Carregar favoritos do localStorage
-    const savedFavorites = localStorage.getItem('favorites')
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites))
+    // Carregar favoritos do localStorage apenas no cliente
+    if (typeof window !== 'undefined') {
+      const savedFavorites = localStorage.getItem('favorites')
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites))
+      }
     }
   }, [])
 
   useEffect(() => {
-    // Salvar favoritos no localStorage
-    localStorage.setItem('favorites', JSON.stringify(favorites))
-    setTotalFavorites(favorites.length)
+    // Salvar favoritos no localStorage apenas no cliente
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('favorites', JSON.stringify(favorites))
+      setTotalFavorites(favorites.length)
+    }
   }, [favorites])
 
   const addToFavorites = (product: Product) => {
