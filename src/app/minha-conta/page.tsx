@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -11,22 +11,21 @@ export default function AccountPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('perfil')
 
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    }
+  }, [status, router])
+
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-[#fff5f5] py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <p className="text-center text-gray-600">Carregando...</p>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
       </div>
     )
   }
 
-  if (status === 'unauthenticated') {
-    router.push('/login')
+  if (!session) {
     return null
   }
 
